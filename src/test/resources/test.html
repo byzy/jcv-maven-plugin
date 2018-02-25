@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style>
+.bar {
+    height: 18px;
+    background: green;
+}
+</style>
+</head>
+<body>
+<script></script>
+<!-- 进度条 -->
+<div id="progress">
+    <div class="bar" style="width: 0%;"></div>
+</div>
+<input id="fileupload" type="file" name="files[]" data-url="http://www.sub.com/storage/UploadSmallFile" multiple>
+<script src="demo.js"></script>
+<script src="js/jquery.fileupload.js"></script>
+<script>
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+
+        // 上传完成后的执行逻辑
+        done: function (e, data) {
+        	alert(data.result.file_path);
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo(document.body);
+            });
+        },
+
+        // 上传过程中的回调函数
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $(".bar").text(progress + '%');
+            $('#progress .bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    });
+});
+</script>
+</body>
+</html>
